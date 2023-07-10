@@ -2,28 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
-import io from 'socket.io-client'
 
-export default function WaitRoom({ socket }) {
+export default function WaitRoom({ socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers }) {
 
-    const [players, setPlayers] = useState([
-        {
-            id: null,
-            number: 1,
-        },
-        {
-            id: null,
-            number: 2,
-        },
-        {
-            id: null,
-            number: 3,
-        },
-        {
-            id: null,
-            number: 4,
-        }
-    ])
+
 
     socket.on('players', (players) => {
         setPlayers(players)
@@ -33,12 +15,24 @@ export default function WaitRoom({ socket }) {
         console.log(message)
     })
 
+    socket.on('playerNumber', (playerNumber) => {
+        setPlayerNumber(playerNumber)
+    })
+
+    socket.on('numberOfPlayers', (numberOfPlayers) => {
+        setnumberOfPlayers(numberOfPlayers)
+    })
+
+    socket.on('startGameOk', () => {
+        setGameStart(true)
+    })
+
     const joinRoom = () => {
-        socket.emit('joinRoom', 'room01')
+        socket.emit('joinRoom')
     }
 
-    const sendMensage = () => {
-        socket.emit('mensagem', 'kkkk')
+    const startGame = () => {
+        socket.emit('startGame')
     }
 
 
@@ -46,14 +40,17 @@ export default function WaitRoom({ socket }) {
         <>
             <Typography variant="h3" gutterBottom>Sala de espera</Typography>
             {players.map((player) => (
-                <Box key={player.number}>
+                <Box key={player.number} color={player.number === playerNumber && 'green'}>
                     <Typography sx={{ fontSize: '1.4rem' }} variant="body1" gutterBottom>
                         {player.id ? `Jogador ${player.number}` : `Aguardadando Jogador ${player.number} ...`}
                     </Typography>
                 </Box>
             ))}
-            <Button sx={{ mr: 2 }} onClick={() => joinRoom()} variant="contained">Start</Button>
-            <Button onClick={() => sendMensage()} variant="contained">Mensagem</Button>
+            {playerNumber ?
+                <Button sx={{ mr: 2 }} disabled={numberOfPlayers >= 2 ? false : true} onClick={() => startGame()} variant="contained">Start</Button> :
+                <Button sx={{ mr: 2 }} disabled={numberOfPlayers >= 4 ? true : false} onClick={() => joinRoom()} variant="contained">Join</Button>
+            }
+
         </>
     )
 }
