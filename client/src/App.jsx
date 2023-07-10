@@ -1,19 +1,26 @@
-import { useState } from 'react'
-import './App.css'
-import Join from './components/Join/Join'
-import Game from './components/Game/Game'
-// import Chat from './components/Chat/Chat'
+import React, { useState, useEffect } from 'react';
+import WaitRoom from './components/WaitRoom';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001');
 
 function App() {
-  const [chatVisibility, setchatVisibility] = useState(false)
-  const [socket,setSocket] = useState(null)
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log(socket.id);
+    });
+
+    return () => {
+      socket.off('connect');
+    };
+  }, []);
 
   return (
     <>
-      {chatVisibility ? <Chat socket={socket} /> : <Join setSocket={setSocket} setchatVisibility={setchatVisibility} />}
-      {/* {chatVisibility ? <Chat socket={socket} /> : <Join setSocket={setSocket} setchatVisibility={setchatVisibility} />} */}
+      {socket && <WaitRoom socket={socket} />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

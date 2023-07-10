@@ -11,7 +11,7 @@ export default function Join({setchatVisibility,setSocket}) {
         const socket = await io.connect('http://localhost:3001')
         socket.emit('set_username',username)
         setSocket(socket)
-        setchatVisibility(true)
+        setchatVisibility(true) 
     }
 
     return (
