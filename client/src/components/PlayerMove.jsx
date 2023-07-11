@@ -4,24 +4,22 @@ import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import { Circle } from './Circle'
 
-export default function PlayerMove() {
+export default function PlayerMove({ socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers,playerTurn,setPlayerTurn }) {
     const moves = 4
+    const [total, setTotal] = useState(numberOfPlayers * 3 + 1)
 
-    const [totalPalitinho, setTotalPalitinho] = useState(0);
+    const [guessTotal, setGuessTotal] = useState(0);
     const [move, setMove] = useState(0);
 
-    const [playerNumber, setPlayerNumber] = useState(1)
-    const [numberOfPlayers, setnumberOfPlayers] = useState(4)
     const [playerScore, playerSetScore] = useState(2)
 
-    const [total, setTotal] = useState(numberOfPlayers * 3 + 1)
 
     useEffect(() => {
         setTotal(numberOfPlayers * 3 + 1)
     }, [numberOfPlayers])
 
-    const handleTotalPalitinho = (value) => {
-        setTotalPalitinho(value)
+    const handleGuessTotal = (value) => {
+        setGuessTotal(value)
     };
 
     const handleMove = (value) => {
@@ -29,8 +27,10 @@ export default function PlayerMove() {
     };
 
     const play = () => {
-        console.log(move,totalPalitinho)
+        console.log(move,guessTotal)
         // setnumberOfPlayers((i) => i - 1)
+        socket.emit('jogada',playerNumber,move,guessTotal)
+        setPlayerTurn(false)
     }
 
     return (
@@ -52,8 +52,8 @@ export default function PlayerMove() {
                     <Circle
                         key={i}
                         value={i}
-                        selected={totalPalitinho === i}
-                        onClick={handleTotalPalitinho}
+                        selected={guessTotal === i}
+                        onClick={handleGuessTotal}
                     />
                 ))}
             </Box>

@@ -3,29 +3,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 
-export default function WaitRoom({ socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers }) {
+export default function WaitRoom({ socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers,playerTurn,setPlayerTurn }) {
 
-
-
-    socket.on('players', (players) => {
-        setPlayers(players)
-    })
-
-    socket.on('receive-message', (message) => {
-        console.log(message)
-    })
-
-    socket.on('playerNumber', (playerNumber) => {
-        setPlayerNumber(playerNumber)
-    })
-
-    socket.on('numberOfPlayers', (numberOfPlayers) => {
-        setnumberOfPlayers(numberOfPlayers)
-    })
-
-    socket.on('startGameOk', () => {
-        setGameStart(true)
-    })
 
     const joinRoom = () => {
         socket.emit('joinRoom')
@@ -34,7 +13,6 @@ export default function WaitRoom({ socket, players, setPlayers, setGameStart, pl
     const startGame = () => {
         socket.emit('startGame')
     }
-
 
     return (
         <>

@@ -10,56 +10,92 @@ function App() {
 
   const [playerNumber, setPlayerNumber] = useState()
   const [playerScore, playerSetScore] = useState()
+  const [playerTurn, setPlayerTurn] = useState(false)
+
+
   const [numberOfPlayers, setnumberOfPlayers] = useState()
 
   const [gameStart, setGameStart] = useState(false)
+
 
   const [players, setPlayers] = useState([
     {
       id: null,
       number: 1,
-      score:0
+      score: 0,
+      move: 0,
+      guessTotal: 0
     },
     {
       id: null,
       number: 2,
-      score:0
+      score: 0,
+      move: 0,
+      guessTotal: 0
     },
     {
       id: null,
       number: 3,
-      score:0
+      score: 0,
+      move: 0,
+      guessTotal: 0
     },
     {
       id: null,
       number: 4,
-      score:0
+      score: 0,
+      move: 0,
+      guessTotal: 0
     }
   ])
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log(socket.id);
-    });
+  socket.on('players', (players) => {
+    setPlayers(players)
+  })
 
-    return () => {
-      socket.off('connect');
-    };
-  }, []);
+  socket.on('turnControl', (number) => {
+    if (playerNumber === number) {
+      setPlayerTurn(true)
+    }
+  })
+
+  socket.on('playerNumber', (playerNumber) => {
+    setPlayerNumber(playerNumber)
+  })
+
+  socket.on('numberOfPlayers', (numberOfPlayers) => {
+    setnumberOfPlayers(numberOfPlayers)
+  })
+
+  socket.on('startGameOk', () => {
+    setGameStart(true)
+  })
 
   return (
     <>
-      {/* {socket && !gameStart && <WaitRoom
-        playerNumber={playerNumber}
-        setPlayerNumber={setPlayerNumber}
-        numberOfPlayers={numberOfPlayers}
-        setnumberOfPlayers={setnumberOfPlayers}
+      {socket && !gameStart && <WaitRoom
+        playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
+        playerTurn={playerTurn} setPlayerTurn={setPlayerTurn}
+        numberOfPlayers={numberOfPlayers} setnumberOfPlayers={setnumberOfPlayers}
         players={players} setPlayers={setPlayers}
-        setGameStart={setGameStart} socket={socket} />}
-      {socket && gameStart && <PlayerMove players={players} setPlayers={setPlayers} socket={socket} />} */}
+        setGameStart={setGameStart}
+        socket={socket} />}
 
-      {/* <PlayerMove  /> */}
-      <Game/>
+      {socket && gameStart && !playerTurn && < Game
+        playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
+        playerTurn={playerTurn} setPlayerTurn={setPlayerTurn}
+        numberOfPlayers={numberOfPlayers} setnumberOfPlayers={setnumberOfPlayers}
+        players={players} setPlayers={setPlayers}
+        setGameStart={setGameStart}
+        socket={socket} />}
+
+      {socket && gameStart && playerTurn && <PlayerMove
+        playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
+        playerTurn={playerTurn} setPlayerTurn={setPlayerTurn}
+        numberOfPlayers={numberOfPlayers} setnumberOfPlayers={setnumberOfPlayers}
+        players={players} setPlayers={setPlayers}
+        setGameStart={setGameStart}
+        socket={socket} />}
     </>
   );
 }
