@@ -4,7 +4,10 @@ import Game from './components/Game';
 import PlayerMove from './components/PlayerMove';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const socket = io('http://' + import.meta.env.VITE_IP + ':3001');
+// const socket = io('http://localhost:3001');
+// const socket = io('http://192.168.0.232:3001');
+// const socket = io('http://172.20.10.2:3001');
 
 function App() {
 
