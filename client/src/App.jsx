@@ -21,6 +21,9 @@ function App() {
 
   const [numberOfPlayers, setnumberOfPlayers] = useState()
 
+
+  const [totalPalito, setTotalPalito] = useState()
+
   const [gameStart, setGameStart] = useState(false)
 
   const [ganhador, setGanhador] = useState()
@@ -95,9 +98,14 @@ function App() {
     setGameStart(false)
   })
 
+  socket.on('resultadoPalito', (total) => {
+    setTotalPalito(total)
+  })
+
   return (
     <Container maxWidth="xl">
       {socket && !gameStart && <WaitRoom
+        totalPalito={totalPalito}
         playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
         ganhador={ganhador} setGanhador={setGanhador}
         playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
@@ -108,6 +116,7 @@ function App() {
         socket={socket} />}
 
       {socket && gameStart && !playerTurn && < Game
+        totalPalito={totalPalito}
         playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
         ganhador={ganhador} setGanhador={setGanhador}
         playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
@@ -118,6 +127,7 @@ function App() {
         socket={socket} />}
 
       {socket && gameStart && playerTurn && <PlayerMove
+        totalPalito={totalPalito}
         playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
         ganhador={ganhador} setGanhador={setGanhador}
         playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}

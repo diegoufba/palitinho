@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import Paper from '@mui/material/Paper';
 
-export default function WaitRoom({ playersGuess, setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
+export default function WaitRoom({totalPalito, playersGuess, setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
 
 
     const joinRoom = () => {

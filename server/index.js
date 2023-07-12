@@ -124,7 +124,10 @@ io.on('connection', (socket) => {
         const acerto = jogadoresAtivos.find(player => player.guessTotal === totalMoves);
 
         // Retorna o número do jogador ativo que acertou ou -1 se nenhum jogador ativo acertou
-        return acerto ? acerto.number : -1;
+        return {
+            totalMoves: totalMoves,
+            ganhador: acerto ? acerto.number : -1
+        };
     }
 
     socket.on('jogada', (playerNumber, move, guessTotal) => {
@@ -143,12 +146,13 @@ io.on('connection', (socket) => {
             }
         }
 
-        const ganhador = verificarAcertos()
-        if (ganhador != -1) {
-            players[ganhador - 1].score++
+        const resultado = verificarAcertos()
+        if (resultado.ganhador != -1) {
+            players[resultado.ganhador - 1].score++
         }
         playersGuess = []
-        io.emit('endTurn', ganhador)
+        io.emit('resultadoPalito',resultado.totalMoves)
+        io.emit('endTurn', resultado.ganhador)
         io.emit('players', players)
     })
 

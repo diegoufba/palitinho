@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { Circle } from './Circle'
 import Palito from './Palito';
 
-export default function PlayerMove({ playersGuess, setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
+export default function PlayerMove({totalPalito, playersGuess, setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
     const moves = 4
     const [total, setTotal] = useState(numberOfPlayers * 3 + 1)
 
