@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import { Circle } from './Circle'
+import Palito from './Palito';
 
 export default function PlayerMove({ playersGuess, setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
     const moves = 4
@@ -30,8 +31,9 @@ export default function PlayerMove({ playersGuess, setPlayersGuess, ganhador, se
     }
 
     return (
-        <>
-            <Typography variant="h3" gutterBottom>Jogador {playerNumber}</Typography>
+        <Box>
+            <Typography variant="h3" sx={{mb:4,fontFamily: 'Bungee'}} >Jogador {playerNumber}</Typography>
+            <Typography variant="h4" sx={{mb:4}} >Escolha quantos palitinhos quer jogar</Typography>
             <Box mb={4}>
                 {[...Array(moves)].map((e, i) => (
                     <Circle
@@ -42,6 +44,9 @@ export default function PlayerMove({ playersGuess, setPlayersGuess, ganhador, se
                     />
                 ))}
             </Box>
+            <Box sx={{ml:3}}><Palito number={move} /></Box>
+            
+            <Typography variant="h4" sx={{mb:4}} >Escolha quantos palitinhos tem no total</Typography>
             <Box>
                 {[...Array(total)].map((e, i) => (
                     <Circle
@@ -53,8 +58,9 @@ export default function PlayerMove({ playersGuess, setPlayersGuess, ganhador, se
                     />
                 ))}
             </Box>
-            <Button disabled={move === null || guessTotal === null} onClick={() => play()} variant="contained">Play</Button>
-        </>
+            <Box sx={{ml:3,mt:4}}><Palito number={guessTotal} /></Box>
+            <Button color='success' size='large' sx={{mt: 6,mb:3,ml:2,fontSize:'1.3rem'}}  disabled={move === null || guessTotal === null} onClick={() => play()} variant="contained">Play</Button>
+        </Box>
     );
 };
 

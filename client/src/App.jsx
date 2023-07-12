@@ -3,6 +3,7 @@ import WaitRoom from './components/WaitRoom';
 import Game from './components/Game';
 import PlayerMove from './components/PlayerMove';
 import io from 'socket.io-client';
+import Container from '@mui/material/Container';
 
 const socket = io('http://' + import.meta.env.VITE_IP + ':3001');
 // const socket = io('http://localhost:3001');
@@ -95,7 +96,7 @@ function App() {
   })
 
   return (
-    <>
+    <Container maxWidth="xl">
       {socket && !gameStart && <WaitRoom
         playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
         ganhador={ganhador} setGanhador={setGanhador}
@@ -125,7 +126,7 @@ function App() {
         players={players} setPlayers={setPlayers}
         setGameStart={setGameStart}
         socket={socket} />}
-    </>
+    </Container >
   );
 }
 
