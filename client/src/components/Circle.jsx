@@ -1,8 +1,10 @@
 import { Box } from '@mui/material';
 
-export const Circle = ({ value, selected, onClick }) => {
+export const Circle = ({ value, selected, onClick, disabled }) => {
     const handleClick = () => {
-        onClick(value);
+        if (!disabled) {
+            onClick(value)
+        }
     };
 
     return (
@@ -14,10 +16,10 @@ export const Circle = ({ value, selected, onClick }) => {
             height={100}
             borderRadius="50%"
             backgroundColor={selected ? 'green' : 'transparent'}
-            border="2px solid green"
+            border={disabled ? "2px solid gray" : "2px solid green"}
             margin={1}
             onClick={handleClick}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
         >
             <span>{value}</span>
         </Box>

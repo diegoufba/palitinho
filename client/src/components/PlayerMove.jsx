@@ -4,15 +4,12 @@ import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import { Circle } from './Circle'
 
-export default function PlayerMove({ socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers,playerTurn,setPlayerTurn }) {
+export default function PlayerMove({ playersGuess, setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
     const moves = 4
     const [total, setTotal] = useState(numberOfPlayers * 3 + 1)
 
-    const [guessTotal, setGuessTotal] = useState(0);
-    const [move, setMove] = useState(0);
-
-    const [playerScore, playerSetScore] = useState(2)
-
+    const [move, setMove] = useState(null);
+    const [guessTotal, setGuessTotal] = useState(null);
 
     useEffect(() => {
         setTotal(numberOfPlayers * 3 + 1)
@@ -27,16 +24,14 @@ export default function PlayerMove({ socket, players, setPlayers, setGameStart, 
     };
 
     const play = () => {
-        console.log(move,guessTotal)
-        // setnumberOfPlayers((i) => i - 1)
-        socket.emit('jogada',playerNumber,move,guessTotal)
+        socket.emit('jogada', playerNumber, move, guessTotal)
+
         setPlayerTurn(false)
     }
 
     return (
         <>
             <Typography variant="h3" gutterBottom>Jogador {playerNumber}</Typography>
-            <Typography variant="h5" gutterBottom>Pontuação: {playerScore}</Typography>
             <Box mb={4}>
                 {[...Array(moves)].map((e, i) => (
                     <Circle
@@ -54,10 +49,11 @@ export default function PlayerMove({ socket, players, setPlayers, setGameStart, 
                         value={i}
                         selected={guessTotal === i}
                         onClick={handleGuessTotal}
+                        disabled={playersGuess.includes(i)}
                     />
                 ))}
             </Box>
-            <Button onClick={() => play()} variant="contained">Play</Button>
+            <Button disabled={move === null || guessTotal === null} onClick={() => play()} variant="contained">Play</Button>
         </>
     );
 };

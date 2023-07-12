@@ -9,13 +9,17 @@ const socket = io('http://localhost:3001');
 function App() {
 
   const [playerNumber, setPlayerNumber] = useState()
-  const [playerScore, playerSetScore] = useState()
+
   const [playerTurn, setPlayerTurn] = useState(false)
+
+  const [playersGuess, setPlayersGuess] = useState([])
 
 
   const [numberOfPlayers, setnumberOfPlayers] = useState()
 
   const [gameStart, setGameStart] = useState(false)
+
+  const [ganhador, setGanhador] = useState()
 
 
   const [players, setPlayers] = useState([
@@ -23,40 +27,34 @@ function App() {
       id: null,
       number: 1,
       score: 0,
-      move: 0,
-      guessTotal: 0
+      move: null,
+      guessTotal: null
     },
     {
       id: null,
       number: 2,
       score: 0,
-      move: 0,
-      guessTotal: 0
+      move: null,
+      guessTotal: null
     },
     {
       id: null,
       number: 3,
       score: 0,
-      move: 0,
-      guessTotal: 0
+      move: null,
+      guessTotal: null
     },
     {
       id: null,
       number: 4,
       score: 0,
-      move: 0,
-      guessTotal: 0
+      move: null,
+      guessTotal: null
     }
   ])
 
   socket.on('players', (players) => {
     setPlayers(players)
-  })
-
-  socket.on('turnControl', (number) => {
-    if (playerNumber === number) {
-      setPlayerTurn(true)
-    }
   })
 
   socket.on('playerNumber', (playerNumber) => {
@@ -71,9 +69,33 @@ function App() {
     setGameStart(true)
   })
 
+  socket.on('turnControl', (number) => {
+    if (playerNumber === number) {
+      setPlayerTurn(true)
+    }
+  })
+
+  socket.on('playersGuess', (playersGuess) => {
+    setPlayersGuess(playersGuess)
+  })
+
+  socket.on('resetGanhador', () => {
+    setGanhador(null)
+  })
+
+  socket.on('endTurn', (ganhador) => {
+    setGanhador(ganhador)
+  })
+
+  socket.on('endGameOk', () => {
+    setGameStart(false)
+  })
+
   return (
     <>
       {socket && !gameStart && <WaitRoom
+        playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
+        ganhador={ganhador} setGanhador={setGanhador}
         playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
         playerTurn={playerTurn} setPlayerTurn={setPlayerTurn}
         numberOfPlayers={numberOfPlayers} setnumberOfPlayers={setnumberOfPlayers}
@@ -82,6 +104,8 @@ function App() {
         socket={socket} />}
 
       {socket && gameStart && !playerTurn && < Game
+        playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
+        ganhador={ganhador} setGanhador={setGanhador}
         playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
         playerTurn={playerTurn} setPlayerTurn={setPlayerTurn}
         numberOfPlayers={numberOfPlayers} setnumberOfPlayers={setnumberOfPlayers}
@@ -90,6 +114,8 @@ function App() {
         socket={socket} />}
 
       {socket && gameStart && playerTurn && <PlayerMove
+        playersGuess={playersGuess} setPlayersGuess={setPlayersGuess}
+        ganhador={ganhador} setGanhador={setGanhador}
         playerNumber={playerNumber} setPlayerNumber={setPlayerNumber}
         playerTurn={playerTurn} setPlayerTurn={setPlayerTurn}
         numberOfPlayers={numberOfPlayers} setnumberOfPlayers={setnumberOfPlayers}

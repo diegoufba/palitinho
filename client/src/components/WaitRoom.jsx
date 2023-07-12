@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 
-export default function WaitRoom({ socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers,playerTurn,setPlayerTurn }) {
+export default function WaitRoom({playersGuess,setPlayersGuess, ganhador, setGanhador, socket, players, setPlayers, setGameStart, playerNumber, setPlayerNumber, numberOfPlayers, setnumberOfPlayers, playerTurn, setPlayerTurn }) {
 
 
     const joinRoom = () => {
